@@ -19,18 +19,61 @@ import {
   disposeBoundsTree
 } from './vendor/three-mesh-bvh/three-mesh-bvh.js';
 
+/*=====DESCRIPCION GENERAL DE LA FUNCIONALIDAD DEL ARCHIVO :*/
+
+/*Este es un módulo que carga un modelo 3D desde un archivo IFC y lo renderiza usando la 
+biblioteca Three.js en un navegador web. El módulo importa varias clases de la biblioteca 
+Three.js, incluidas IFCLoader, AmbientLight, AxesHelper, DirectionalLight, GridHelper, 
+PerspectiveCamera, MeshLambertMaterial, Scene, Raycaster, Vector2 y WebGLRenderer. 
+También importa OrbitControls para habilitar el control del mouse del modelo renderizado, 
+y Raycast acelerado, computeBoundsTree y disposeBoundsTree de la biblioteca three-mesh-bvh, 
+que se utilizan para optimizar el rendimiento del proceso de renderizado.
+El módulo define una función setup() que configura la escena, la cámara, las luces, los 
+controles del mouse y el renderizador de Three.js. También configura la carga de IFC y 
+agrega un detector de eventos para cambiar el tamaño de la ventana gráfica. Además, hay dos 
+materiales, preselectMat y selectMat, que definen la apariencia del modelo cuando se 
+preselecciona o selecciona, respectivamente. El módulo define dos funciones, getIntersection(evento) 
+y getObjectData(evento), que se utilizan para seleccionar objetos en el modelo. La función 
+getIntersection(evento) proyecta un rayo desde la posición del mouse y devuelve el objeto que se 
+cruza, mientras que la función getObjectData(evento) devuelve las propiedades y los conjuntos de 
+propiedades del objeto seleccionado.*/
+
 
 // The `Streamlit` object exists because our html file includes
 // `streamlit-component-lib.js`.
 // If you get an error about "Streamlit" not being defined, that
 // means you're missing that file.
 
+
+/*=====DESCRIPCION DETALLADA POR FUNCIONES O SCRIPTS:*/
+
+/*Este código está creando un array vacío llamado "ifcModels" y una instancia 
+de la clase "IFCLoader" llamada "ifcLoader". La clase IFCLoader es una utilidad de 
+Three.js, una biblioteca de gráficos 3D en JavaScript, que se utiliza para cargar 
+modelos en formato IFC (Industry Foundation Classes), que es un formato de archivo 
+utilizado para la interoperabilidad de software en la industria de la construcción.
+Además, el código está definiendo un objeto "size" que tiene dos propiedades: 
+"width" y "height". Estas propiedades están siendo asignadas a los valores de 
+la anchura y altura de la ventana del navegador utilizando los objetos del 
+navegador "window.innerWidth" y "window.innerHeight", respectivamente.*/
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
 const size = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
+
+
+/*Este código crea un nuevo material MeshLambertMaterial y lo asigna a 
+  la constante preselectMat. Este material es utilizado para representar 
+  la apariencia visual de un objeto en una escena 3D renderizada con Three.js.
+  Las propiedades que se establecen en el material son las siguientes:
+  transparent: true: esto indica que el material es transparente.
+  opacity: 0.6: esto establece el nivel de opacidad del material en un 60%.
+  color: 0xf1a832: esto establece el color del material en un tono dorado.
+  depthTest: false: esto desactiva la prueba de profundidad en el material, 
+  lo que significa que siempre se renderizará encima de otros objetos, incluso 
+  si están más cerca de la cámara.*/
 const preselectMat = new MeshLambertMaterial({
   transparent: true,
   opacity: 0.6,
@@ -40,6 +83,17 @@ const preselectMat = new MeshLambertMaterial({
 
 /*===============cambio de color========================================*/
 
+
+/*Este código define un material para una malla (Mesh) que se utilizará para 
+resaltar elementos seleccionados en una escena de tres.js. El material se crea 
+utilizando la clase MeshLambertMaterial y se especifican las siguientes propiedades:
+
+transparent: true: indica que el material es transparente.
+opacity: 0.6: establece la opacidad del material en un 60%.
+color: 0x6aa84f: establece el color del material en un tono de verde claro.
+depthTest: false: indica que la prueba de profundidad se desactiva para el 
+material, lo que significa que no se verá afectado por otros objetos que se 
+encuentren detrás de él en la escena.*/
 const selectMat = new MeshLambertMaterial({
   transparent: true,
   opacity: 0.6,
@@ -47,9 +101,26 @@ const selectMat = new MeshLambertMaterial({
   depthTest: false
 })
 
+
+/*Esta función es parte de una aplicación web desarrollada con Streamlit, 
+  una plataforma para la creación de aplicaciones web interactivas en Python. 
+  La función sendValue() se utiliza para enviar un valor de retorno desde el 
+  componente personalizado que se ha creado en la aplicación y establecer este 
+  valor como el valor actual del componente. En otras palabras, esta función 
+  permite que el componente personalizado interactúe con la aplicación y 
+  proporcione valores que pueden ser utilizados por otras partes de la aplicación.*/
 function sendValue(value) {
   Streamlit.setComponentValue(value)
 }
+
+/*La función setup() establece una escena básica en Three.js, que incluye una cámara, 
+  luces, controles de mouse, renderizador y objetos adicionales como rejillas, ejes 
+  y selecciones de objetos. La función también configura la carga de modelos IFC y 
+  la detección de intersección con el mouse para resaltar y seleccionar objetos en la 
+  escena. Cuando un objeto es seleccionado, se llama a la función sendValue() para 
+  enviar los datos del objeto seleccionado al backend de Python a través de Streamlit. 
+  En general, la función setup() configura y establece una escena interactiva en Three.js 
+  que puede ser utilizada para visualizar y manipular modelos 3D.*/
 
 function setup(){
   //BASIC THREE JS SCENE, CAMERA, LIGHTS, MOUSE CONTROLS
@@ -124,7 +195,19 @@ function setup(){
       raycaster.firstHitOnly = true;
       const mouse = new Vector2();
     
-      function getIntersection(event) {
+      /*La función getIntersection se encarga de obtener el objeto 3D 
+        que es intersectado por un rayo que se emite desde la posición del 
+        mouse en la pantalla. Para hacer esto, la función primero calcula 
+        la posición del mouse en la pantalla en relación a los límites de 
+        un canvas, que es donde se dibujan los modelos 3D. Luego, se coloca 
+        un raycaster en la cámara y se apunta hacia la posición del mouse. El 
+        raycaster se utiliza para determinar qué objetos 3D en la escena están 
+        siendo intersectados por el rayo. Si se encuentra un objeto, la función 
+        devuelve un objeto con el ID del objeto IFC (Industry Foundation Classes) 
+        que se ha encontrado y el ID del modelo al que pertenece. Este objeto 
+        se utiliza en la función getObjectData para recuperar las propiedades 
+        y conjuntos de propiedades asociadas con el objeto IFC.*/
+        function getIntersection(event) {
     
         // Computes the position of the mouse on the screen
         const bounds = threeCanvas.getBoundingClientRect();
@@ -150,7 +233,19 @@ function setup(){
         }
         ;
     }
-    
+
+      /*La función getObjectData(event) toma un objeto de evento como argumento y 
+      devuelve una cadena de texto JSON que contiene información sobre un objeto 
+      3D que se intersecta con un rayo que se lanza desde el evento. Esta información 
+      incluye el identificador del objeto, sus propiedades y conjuntos de propiedades.
+      Primero, la función llama a getIntersection(event) para obtener el objeto 
+      intersectado y lo asigna a la variable intersection. Si intersection existe, 
+      la función llama a ifc.getItemProperties(intersection.modelID, objectId) y 
+      ifc.getPropertySets(intersection.modelID, objectId, true) para obtener las 
+      propiedades y conjuntos de propiedades del objeto, respectivamente. Luego, la 
+      función construye un objeto de datos con el identificador del objeto y sus 
+      propiedades y conjuntos de propiedades, y devuelve una cadena de texto JSON que 
+      representa este objeto de datos utilizando JSON.stringify().*/
       function getObjectData(event) {
         const intersection = getIntersection(event);
         if (intersection){
