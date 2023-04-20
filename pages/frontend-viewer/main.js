@@ -262,8 +262,29 @@ function setup(){
       
     // HIGHLIGHT
     // References to the previous selections
+    
+    /*En el mismo contexto, el código crea dos objetos llamados 
+    highlightModel y selectModel, ambos con una propiedad id 
+    inicializada en -1. Estos objetos probablemente se utilizan 
+    para realizar un seguimiento del modelo resaltado y el modelo 
+    seleccionado en la escena 3D. Si se resalta o selecciona un modelo, 
+    el objeto highlightModel o selectModel se actualiza con la información 
+    del modelo seleccionado.*/
       const highlightModel = { id: - 1};
       const selectModel = { id: - 1};
+
+
+    /*Esta función se encarga de resaltar un modelo en la escena cuando se 
+    produce un evento de doble clic en un elemento, utilizando el material 
+    especificado. Para ello, primero utiliza la función getIntersection() para 
+    obtener la intersección entre el rayo que parte de la cámara y el objeto 
+    seleccionado por el usuario. Si se produce una intersección, se crea un nuevo 
+    subconjunto del modelo especificado en la intersección, utilizando el material 
+    especificado y añadiéndolo a la escena. Si no se produce una intersección, se 
+    elimina cualquier subconjunto previo del modelo especificado que haya sido creado 
+    previamente. En definitiva, esta función se encarga de aplicar un efecto visual 
+    que resalta el elemento seleccionado por el usuario para facilitar su identificación 
+    en la escena.*/  
     function highlight(event, material, model) {
     const intersection = getIntersection(event)
     if (intersection) {

@@ -6,6 +6,28 @@ from datetime import datetime
 
 import ifcopenshell
 
+# El código proporcionado parece ser una aplicación de Python que 
+# utiliza los módulos streamlit, ifcopenshell y otros para cargar 
+# y procesar datos de archivos IFC (Industry Foundation Classes) 
+# utilizados en la construcción de edificios. La aplicación permite 
+# la visualización de horarios de trabajo, horarios de costos y 
+# gráficos de entidades. También proporciona funciones para agregar 
+# horarios de trabajo y de costos y guardar archivos IFC modificados.
+#La función initialize_session_state inicializa un estado de sesión 
+# con diferentes variables booleanas y diccionarios vacíos para 
+# almacenar datos de la aplicación. La función load_data carga datos 
+# del archivo IFC si está presente en la sesión y llama a las 
+# funciones load_cost_schedules y load_work_schedules para cargar horarios 
+# de costos y de trabajo. Las funciones add_cost_schedule y add_work_schedule 
+# permiten agregar horarios de costos y de trabajo a los datos cargados. 
+# La función draw_graphs muestra gráficos de las entidades cargadas, 
+# mientras que la función draw_schedules muestra horarios de trabajo y de costos. 
+# La función draw_side_bar muestra una barra lateral con opciones para agregar 
+# horarios de trabajo y de costos y guardar archivos IFC. La función 
+# initialise_debug_props inicializa una serie de variables de depuración para 
+# la aplicación, mientras que la función get_object_data procesa los datos de 
+# una entidad y los muestra en una tabla. 
+
 def initialize_session_state():
     session["isHealthDataLoaded"] = False
     session["HealthData"] = {}

@@ -3,6 +3,26 @@ from tools import ifchelper
 from tools import pandashelper
 from tools import graph_maker
 
+#======Descripcion general de la funcionalidad del archivo :
+
+# Este código es un módulo de Python que utiliza la biblioteca 
+# Streamlit y algunas funciones personalizadas importadas desde 
+# los archivos "tools". La función execute() es la función 
+# principal que define la interfaz de usuario y las acciones 
+# que se realizarán en función de las interacciones del usuario. 
+# La función initialize_session_state() inicializa el estado 
+# de la sesión en la primera ejecución de la aplicación, y 
+# la función load_data() carga los datos de un archivo de 
+# formato IFC (Industry Foundation Classes) en un marco de datos 
+# de Pandas. La función download_csv() y download_excel() 
+# descargan los datos en formato CSV y Excel, respectivamente. 
+# La función get_ifc_pandas() es una función personalizada que 
+# utiliza funciones del archivo ifchelper para extraer datos de 
+# objetos IFC y crear un marco de datos de Pandas. La función 
+# graph_maker.load_graph() es una función personalizada que 
+# crea visualizaciones gráficas a partir de datos del marco de datos.
+
+
 session = st.session_state
 
 def initialize_session_state():
