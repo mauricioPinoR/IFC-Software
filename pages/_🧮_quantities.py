@@ -5,22 +5,27 @@ from tools import graph_maker
 
 #======Descripcion general de la funcionalidad del archivo :
 
-# Este código es un módulo de Python que utiliza la biblioteca 
-# Streamlit y algunas funciones personalizadas importadas desde 
-# los archivos "tools". La función execute() es la función 
-# principal que define la interfaz de usuario y las acciones 
-# que se realizarán en función de las interacciones del usuario. 
-# La función initialize_session_state() inicializa el estado 
-# de la sesión en la primera ejecución de la aplicación, y 
-# la función load_data() carga los datos de un archivo de 
-# formato IFC (Industry Foundation Classes) en un marco de datos 
-# de Pandas. La función download_csv() y download_excel() 
-# descargan los datos en formato CSV y Excel, respectivamente. 
-# La función get_ifc_pandas() es una función personalizada que 
-# utiliza funciones del archivo ifchelper para extraer datos de 
-# objetos IFC y crear un marco de datos de Pandas. La función 
-# graph_maker.load_graph() es una función personalizada que 
-# crea visualizaciones gráficas a partir de datos del marco de datos.
+#Este módulo contiene una aplicación web que permite cargar y analizar datos en 
+# formato IFC (Industry Foundation Classes) que representan modelos de edificios 
+# en 3D. El módulo utiliza la biblioteca Streamlit para crear la interfaz gráfica 
+# de usuario y las herramientas de visualización de datos. El código define varias 
+# funciones que se encargan de cargar y procesar los datos IFC, así como de generar 
+# tablas y gráficos para visualizar los resultados.
+#La función initialize_session_state() se utiliza para crear una sesión y establecer 
+# los valores iniciales de algunas variables. La función load_data() se encarga de 
+# cargar los datos IFC en un marco de datos de Pandas y de actualizar la variable 
+# de sesión IsDataFrameLoaded en consecuencia. La función download_csv() y download_excel() 
+# descargan los datos del marco de datos en formato CSV y Excel, respectivamente.
+#La función execute() es el punto de entrada principal del código. En esta función se 
+# configura la página, se muestra un encabezado y se verifica si los datos IFC han 
+# sido cargados. Si los datos no han sido cargados, se llama a la función load_data() para 
+# cargarlos. Si los datos están cargados, se muestra una pestaña para revisar el marco de 
+# datos y otra pestaña para revisar los totales y gráficos de los datos cuantitativos. La 
+# función pandashelper.filter_dataframe_per_class() se utiliza para filtrar el marco de datos 
+# por clase y la función pandashelper.get_quantities() se utiliza para obtener las cantidades 
+# cuantitativas. La biblioteca Plotly se utiliza para generar los gráficos.
+
+
 
 
 session = st.session_state
